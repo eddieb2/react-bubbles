@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
 
 const initialColor = {
@@ -8,7 +7,7 @@ const initialColor = {
 };
 
 const ColorList = ({ colors, updateColors, toggle, setToggle }) => {
-  console.log(colors);
+  // console.log(colors);
   const [editing, setEditing] = useState(false);
   const [colorToEdit, setColorToEdit] = useState(initialColor);
 
@@ -20,10 +19,10 @@ const ColorList = ({ colors, updateColors, toggle, setToggle }) => {
   const saveEdit = (e) => {
     e.preventDefault();
     axiosWithAuth()
-      .put(`/api/colors/${colors.id}`, colorToEdit)
+      .put(`/api/colors/${colorToEdit.id}`, colorToEdit)
       .then((res) => {
         console.log(res);
-        updateColors([...colors, res.data]);
+        setToggle(!toggle);
       });
   };
 
