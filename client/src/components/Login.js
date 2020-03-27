@@ -16,11 +16,14 @@ const Login = () => {
         password: ''
       }}
       onSubmit={(data, { resetForm }) => {
-        console.log(data);
         axiosWithAuth()
           .post('/api/login', data)
           .then((res) => {
-            console.log(res);
+            console.log('post res: ', res);
+            localStorage.setItem(
+              'token',
+              JSON.stringify(res.data.payload)
+            );
             resetForm({});
             history.push('/bubble-page');
           });
