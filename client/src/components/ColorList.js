@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { axiosWithAuth } from '../utils/axiosWithAuth';
+import { Formik, Field, Form } from 'formik';
+import { TextField, Button } from '@material-ui/core';
 
 const initialColor = {
   color: '',
@@ -90,6 +92,43 @@ const ColorList = ({ colors, updateColors, toggle, setToggle }) => {
           </div>
         </form>
       )}
+      <Formik
+        initialValues={{
+          color: '',
+          code: { hex: '' },
+          id: Date.now()
+        }}
+        onSubmit={(data, { resetForm }) => {
+          axiosWithAuth()
+            .post('/api/colors', data)
+            .then((res) => {
+              console.log('added color:', res);
+              setToggle(!toggle);
+            });
+        }}
+      >
+        {({ values }) => (
+          <Form>
+            <Field
+              name="color"
+              values={values.color}
+              variant="outlined"
+              label="Color Name"
+              as={TextField}
+            />
+            <Field
+              name="code.hex"
+              values={values.code.hex}
+              variant="outlined"
+              label="Hex Code"
+              as={TextField}
+            />
+            <Button variant="contained" color="primary" type="submit">
+              Add Color
+            </Button>
+          </Form>
+        )}
+      </Formik>
       <div className="spacer" />
       {/* stretch - build another form here to add a color */}
     </div>
